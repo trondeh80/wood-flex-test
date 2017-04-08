@@ -1,0 +1,20 @@
+// Colors
+$red: #d00000;
+$text: #222;
+$menuTextColor: #777;
+$invertedBackground: #222 ;
+$invertedTextColor: #fff ;
+$darkBackground: #252525;
+
+// Custom varialbes :
+$navheight: 84px;
+
+// Breakpoints:
+$xs-min: 30;
+$sm-min: 48;
+$md-min: 64;
+$lg-min: 75;
+$screen-xs-min: var($xs-min)em;
+$screen-sm-min: var($sm-min)em;
+$screen-md-min: var($md-min)em;
+$screen-lg-min: var($lg-min)em;
