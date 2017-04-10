@@ -37,12 +37,26 @@
     background-size: cover;
   }
 
-  section.page-inner {
-    min-height: 20rem;
+
+  section.bullet-points {
+    padding: 5rem 0;
+    min-height: 30rem;
+
+    .text-column{
+      width: 65%;
+    }
+
+    h1 {
+      display: inline-block;
+      border-bottom: solid #000 5px;
+      margin:0 ;
+      padding: 20px 0;
+    }
   }
 
   section.inverted-background-skew {
-    padding: 5rem 0;
+    padding: 15rem 0;
+    min-height: 40rem;
     clip-path: polygon(0 30%, 100% 0, 100% 100%, 0 100%);
   }
 
