@@ -45,7 +45,7 @@
 
           /* Burger icon! */
           .menu-icon {
-            float:right;
+            float: right;
             display: none;
             padding-left: 1.25em;
             position: relative;
@@ -132,6 +132,17 @@
 
 }
 
+footer {
+  .upper-footer {
+    min-height: 25rem;
+    background-color: $red;
+  }
+  .lower-footer {
+    min-height: 5rem;
+    background-color: $darkBackground;
+  }
+}
+
 /* mobile / tablet */
 @media screen and (max-width: 75em) {
   .page {
@@ -187,17 +198,4 @@
   .page-inner, .container {
     width: 960px;
   }
-}
-
-// Global elements:
-img.img-responsive {
-
-}
-
-.align-right {
-  text-align: right;
-}
-
-.align-left {
-  text-align: left;
 }
