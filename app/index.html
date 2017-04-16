@@ -41,15 +41,17 @@
 
 <div class="page home">
 
-  <nav class="topmenu">
+  <header class="topmenu">
     <div class="page-inner container menu-content">
       <div class="row menu-inner">
         <div class="menu-block logowrapper">
           <a href="/"><img src="images/logo.png" class="logo"/></a>
         </div>
 
-        <div class="menu-block menu-text-content menu-wrapper ">
+        <nav class="menu-block menu-text-content menu-wrapper">
+          <a href="#" id="menu-toggler"><span class="menu-icon hidden-lg"></span></a>
           <div class="menuitems">
+              <a class="menu-icon-close" href="#">Lukk</a>
               <ul>
                 <li class="active"><a href="#">Hjem</a></li>
                 <li><a href="#">Innredning</a></li>
@@ -58,11 +60,11 @@
                 <li><a href="#">Kontakt</a></li>
               </ul>
           </div>
-        </div>
+        </nav>
 
       </div>
     </div>
-  </nav>
+  </header>
 
   <section class="hero-image hero-image-one">
 
@@ -77,13 +79,13 @@
   </section>
 
   <section class="page-inner container bullet-points">
-    <div class="row">
+
       <div class="text-column">
         <h1>Moderne og fascinerende interiørelementer av tre</h1>
         <p>B-wood tilpasser og konstruerer uttrykk i tre som passer din eksisterende stil. Vi er spesialister på butikkinnredninger og
           spesiallagde løsninger for bedrifter.</p>
       </div>
-    </div>
+
   </section>
 
   <section class="inverted-background  inverted-background-skew">
@@ -133,6 +135,8 @@
 
 </div>
 
+
+<div id="overlay" class="overlay"></div><!-- /c-mask -->
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 <script>
