@@ -16,7 +16,7 @@
   <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
   <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
-  <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -39,40 +39,43 @@
 </head>
 <body>
 
-<div class="page home">
 
-  <header class="topmenu">
-    <div class="page-inner container menu-content">
-      <div class="row menu-inner">
-        <div class="menu-block logowrapper">
-          <a href="/"><img src="images/logo.png" alt="B-wood.no - profesjonelle håndtverkere" class="logo"/></a>
-        </div>
-
-        <nav class="menu-block menu-text-content menu-wrapper">
-          <a href="#" id="menu-toggler"><span class="menu-icon hidden-lg"></span></a>
-          <div class="menuitems">
-              <a class="menu-icon-close" href="#">Lukk &#9776;</a>
-              <ul>
-                <li class="active"><a href="#">Hjem</a></li>
-                <li><a href="#">Innredning</a></li>
-                <li><a href="#">Møbler</a></li>
-                <li><a href="#">Blogg</a></li>
-                <li><a href="#">Kontakt</a></li>
-              </ul>
-          </div>
-        </nav>
-
+<header class="topmenu">
+  <div class="page-inner container menu-content">
+    <div class="menu-inner">
+      <div class="menu-block logowrapper">
+        <a href="/"><img src="images/logo.png" alt="B-wood.no - profesjonelle håndtverkere" class="logo"/></a>
       </div>
+
+      <nav class="menu-block menu-text-content menu-wrapper">
+        <a href="#" id="menu-toggler" class="menu-activate menu-icon">
+          <!--<span class="menu-icon hidden-lg"></span>-->
+          <span class="burger-icon">&#9776;</span>
+        </a>
+        <div class="menuitems menu-activate">
+          <a class="menu-icon-close" href="#">X</a>
+          <ul>
+            <li class="active"><a href="#">Hjem</a></li>
+            <li><a href="#">Innredning</a></li>
+            <li><a href="#">Hi-macs</a></li>
+            <li><a href="#">Kontakt</a></li>
+          </ul>
+        </div>
+      </nav>
+
     </div>
-  </header>
+  </div>
+</header>
+<div class="page home">
+  <section class="carousel">
 
-  <section class="hero-image hero-image-one">
-
-    <div class="container hero-inner">
-      <div class="text">
-        <h2>Profesjonelle håndverkere</h2>
-        <p>Vi er en gjeng dedikerte profesjonelle håndtverkere
-          som har jobbet i bransjen i mange år.</p>
+    <div class="hero-image hero-image-one">
+      <div class="hero-inner">
+        <div class="text animated hero-text" data-delay="500" data-animate="no-transparancy">
+          <h2>Profesjonelle håndverkere</h2>
+          <p>Vi lager unike og vakre kreasjoner med å kombinere lang erfaring med 3d modellering og bruk av nye materialer</p>
+          <a href="/kontakt" class="button pull-right">Kontakt oss</a>
+        </div>
       </div>
     </div>
 
@@ -80,11 +83,12 @@
 
   <section class="page-inner container bullet-points">
 
-      <div class="text-column">
-        <h1>Moderne og fascinerende interiørelementer av tre</h1>
-        <p>B-wood tilpasser og konstruerer uttrykk i tre som passer din eksisterende stil. Vi er spesialister på butikkinnredninger og
-          spesiallagde løsninger for bedrifter.</p>
-      </div>
+    <div class="text-column">
+      <h1>Moderne og fascinerende interiørelementer av tre</h1>
+      <p>B-wood tilpasser og konstruerer uttrykk i tre som passer din eksisterende stil. Vi er spesialister på
+        butikkinnredninger og
+        spesiallagde løsninger for bedrifter.</p>
+    </div>
 
   </section>
 
@@ -104,24 +108,36 @@
   <section class="our-work">
 
     <div class="container page-inner">
+
+      <h2 class="header-center margin-bottom align-center">Prosjekter</h2>
+
       <div class="card-row">
         <div class="card-wrap">
           <div class="card">
-            <h3>blabla</h3>
+            <div class="card-image">
+              <img src="images/interior_kjopesenter.jpg" />
+            </div>
+            <h3>Interiørelement til kjøpesenter</h3>
+            <p>Lorem ipsum blab lalbalblablbal </p>
+          </div>
+        </div>
+
+        <div class="card-wrap">
+          <div class="card">
+            <div class="card-image">
+              <img src="images/former-kjopesenter.jpg" />
+            </div>
+            <h3>Moderne former til toalett</h3>
             <p>as lsad alksdalsdjkkasj ddksa dklsa</p>
           </div>
         </div>
 
         <div class="card-wrap">
           <div class="card">
-            <h3>blabla</h3>
-            <p>as lsad alksdalsdjkkasj ddksa dklsa</p>
-          </div>
-        </div>
-
-        <div class="card-wrap">
-          <div class="card">
-            <h3>blabla</h3>
+            <div class="card-image">
+              <img src="images/yoga-rom.jpg" />
+            </div>
+            <h3>Design for stille yoga rom</h3>
             <p>as lsad alksdalsdjkkasj ddksa dklsa</p>
           </div>
         </div>
@@ -132,18 +148,101 @@
 
   </section>
 
-  <footer>
-    <div class="upper-footer">
-      <div class="container footer-wrap">
+  <section class="who-are-we">
+    <div class="container page-inner">
+
+      <h2 class="header-center margin-bottom align-center">Hvem vi er</h2>
+
+      <div class="card-row">
+
+        <div class="card-wrap">
+          <div class="card">
+            <div class="card-image">
+              <img src="images/worker-1.jpg" />
+            </div>
+            <h3>Henchman 1</h3>
+            <p>as lsad alksdalsdjkkasj ddksa dklsa</p>
+          </div>
+        </div> <!-- wrap -->
+
+        <div class="card-wrap">
+          <div class="card">
+            <div class="card-image">
+              <img src="images/worker-2.jpg" />
+            </div>
+            <h3>Henchman 2</h3>
+            <p>as lsad alksdalsdjkkasj ddksa dklsa</p>
+          </div>
+        </div> <!-- wrap -->
+
+        <div class="card-wrap">
+          <div class="card">
+            <div class="card-image">
+              <img src="images/worker-3.jpg" />
+            </div>
+            <h3>Henchman 3</h3>
+            <p>as lsad alksdalsdjkkasj ddksa dklsa</p>
+          </div>
+        </div> <!-- wrap -->
 
       </div>
-    </div>
-    <div class="lower-footer">
+
+      <div class="card-row">
+        <div class="card-wrap">
+          <div class="card">
+            <div class="card-image">
+              <img src="images/bjorn.jpg" />
+            </div>
+            <h3>Henchman 3</h3>
+            <p>as lsad alksdalsdjkkasj ddksa dklsa</p>
+          </div>
+        </div> <!-- wrap -->
+      </div>
 
     </div>
-  </footer>
+  </section>
+
+  <section class="contact-us">
+    <div class="container page-inner">
+        <div class="row">
+          <div class="col-lg-8 col-md-6 col-xs-12">
+            <h3>Ta kontakt</h3>
+            <p>Bruk skjemaet til å sende oss en melding.</p>
+            <p>Du kan også ringe oss på 47 47 47 47 eller sende en epost til <span class="email"></span></p>
+          </div>
+          <div class="col-lg-4 col-md-6 col-xs-12">
+            <form>
+
+              <div class="form-group">
+                <input type="email" required name="email" value="" placeholder="Din epost" />
+              </div>
+
+              <div class="form-group">
+                <textarea name="message" required placeholder="Skriv din melding til oss her" rows="5"></textarea>
+              </div>
+
+              <div class="form-group">
+                <button class="button" type="submit">Send</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+    </div>
+  </section>
 
 </div>
+
+<footer>
+  <div class="upper-footer">
+    <div class="container footer-wrap">
+
+    </div>
+  </div>
+  <div class="lower-footer">
+
+  </div>
+</footer>
 
 
 <div id="overlay" class="overlay"></div>

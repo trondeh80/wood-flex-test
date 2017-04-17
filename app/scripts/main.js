@@ -1,28 +1,44 @@
 (function(){
-  var BWOOD = {
-    ga: ''
+
+  const BWOOD = {
+    ga: 'UA-1139355-43'
   };
 
   $(document).ready(documentReady);
 
   function documentReady(){
     $('.menu-icon').click(toggleMenu);
-    $(document).click(closeMenu);
+    $('.overlay').click(closeMenu);
     $('.menu-icon-close').click(closeMenu);
-    $('header nav').click(function(e){
-        e.stopPropagation();
-    });
+    setupAnimation();
     setupAnalytics();
+    $('.email').html(getEmail());
+  }
+
+  function getEmail(){
+    const domain = 'b-wood.no';
+    return `bge@${domain}`;
   }
 
   function closeMenu(){
-    $('.menuitems').removeClass('is-active');
+    $('.menu-activate').removeClass('is-active');
     $('#overlay').removeClass('is-active');
   }
 
   function toggleMenu(){
-    $('.menuitems').toggleClass('is-active');
+    $('.menu-activate').toggleClass('is-active');
     $('#overlay').toggleClass('is-active');
+  }
+
+  function setupAnimation(){
+    $('.animated').each(function(){
+      const delay = $(this).data('delay') ;
+      if (delay){
+        setTimeout(() => $(this).addClass($(this).data('animate')), delay);
+      } else {
+        $(this).addClass($(this).data('animate'));
+      }
+    });
   }
 
   function setupAnalytics(){
