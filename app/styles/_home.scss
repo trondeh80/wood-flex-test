@@ -4,7 +4,8 @@
 
   .hero-image {
     width: 100%;
-    height: calc(75vh - #{$navheight});
+    //height: calc(100vh - #{$navheight});
+    height: 100vh;
 
     .container.hero-inner {
 
@@ -58,7 +59,11 @@
   section.inverted-background-skew {
     padding: 15rem 0;
     min-height: 40rem;
-    clip-path: polygon(0 30%, 100% 0, 100% 70%, 0 100%);
+    //clip-path: polygon(0 30%, 100% 0, 100% 70%, 0 100%); /* the old simple */
+
+    /* second edition. recreating shapes*/
+    -webkit-clip-path: polygon(100% 14%, 100% 94%, 83% 100%, 0 92%, 0 16%, 76% 0);
+    clip-path: polygon(100% 14%, 100% 94%, 83% 100%, 0 92%, 0 16%, 76% 0);
   }
 
   section.our-work {
