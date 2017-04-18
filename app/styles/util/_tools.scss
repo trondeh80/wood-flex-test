@@ -54,6 +54,15 @@
   &.btn-grey {
     background-color: $greyButtonBg;
   }
+
+  &:hover{
+    background-color: $darkerRed;
+  }
+
+  &:focus {
+    background-color: $darkerRed;
+  }
+
 }
 
 .no-transparancy {
@@ -67,4 +76,9 @@ section h2.header-center {
     margin-bottom: 10px;
   }
 }
+
+.justify-center {
+  justify-content: center !important;
+}
+
 

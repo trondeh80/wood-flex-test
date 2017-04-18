@@ -2,10 +2,7 @@
 
 .hero-image {
   width: 100%;
-  //height: calc(100vh - #{$navheight});
-  height: 100vh;
-
-  //border-bottom: solid 5px $darkBackground;
+  height: calc(100vh - #{$navheight});
 
   .hero-inner {
 
@@ -27,12 +24,35 @@
 
       h2 {
         margin: 0;
-        font-size: 2.8em;
+        font-size: 2.2em;
       }
       p {
         font-size: 1.1em;
       }
     }
+
+    .bottom-nav {
+      align-self: flex-end;
+      .arrow-down {
+        width: 0;
+        height: 0;
+        border-left: 3rem solid transparent;
+        border-right: 3rem solid transparent;
+        border-top: 3rem solid rgba(255,255,255,0.9);
+        &:hover {
+          border-top: 3rem solid rgba(255,255,255,0.7);
+        }
+      }
+      margin-bottom:10px;
+    }
+
+  }
+}
+
+@media screen and (max-width: 45em) {
+  .hero-image .hero-inner .text {
+    margin-right: 0;
+    width: 100%;
   }
 }
 
@@ -63,7 +83,6 @@ section.inverted-background-skew {
   min-height: 40rem;
 
   /* second edition. recreating shapes*/
-  -webkit-clip-path: polygon(100% 14%, 100% 94%, 83% 100%, 0 92%, 0 16%, 76% 0);
   clip-path: polygon(100% 14%, 100% 94%, 83% 100%, 0 92%, 0 16%, 76% 0);
 }
 
