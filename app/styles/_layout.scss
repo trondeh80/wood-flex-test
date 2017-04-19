@@ -101,7 +101,7 @@ header.topmenu {
 
 /* wrapper for all content on page */
 .page {
-  flex: 1;
+  //flex: 1;
 }
 
 .page-inner {
@@ -121,7 +121,7 @@ footer {
   }
   .lower-footer {
     min-height: 25rem;
-    background-color: $darkBackground;
+    background-color: #1f1f1f;
   }
 }
 
@@ -180,6 +180,7 @@ footer {
 
       #menu-toggler, .menu-icon {
         display: flex;
+        padding-right: 1rem;
       }
 
       .menu-icon-close {
@@ -191,25 +192,28 @@ footer {
         vertical-align: middle;
         text-align: right;
         text-decoration: none;
-        color: black;
+        color: white;
       }
 
       .menuitems {
+        background-color: $darkBackground;
+        color: white;
         display: none;
         position: fixed;
         top: 0;
         right: 0;
         z-index: 200;
-        background-color: #fff;
+        // background-color: #fff;
         transition: transform 0.3s;
 
-        width: 300px;
+        width: 75%;
         height: 100%;
         overflow: hidden;
         padding: 10px;
 
         &.is-active {
           display: block;
+          border-bottom: solid white 1px;
         }
 
         ul {
@@ -220,6 +224,15 @@ footer {
             text-align: left;
             display: block;
             width: 100%;
+            &.active {
+              a{
+                color: $red;
+                padding-left: 0.5em;
+              }
+            }
+            a {
+              color: white;
+            }
           }
         }
       }
