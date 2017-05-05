@@ -1,0 +1,106 @@
+form {
+  .form-group {
+
+    position: relative;
+    margin-top: 1rem;
+
+    box-sizing: border-box;
+    padding: 0 .75rem;
+
+    label {
+
+      color: #777;
+
+      position: absolute;
+      top: 0.8rem;
+      cursor: text;
+
+      text-align: initial;
+      left: .75rem;
+      font-size: .8rem;
+
+      transform: translateY(-140%);
+
+      //width: 100%;
+      pointer-events: none;
+    }
+
+
+    input:focus, textarea:focus, select:focus {
+      outline-offset: -2px;
+    }
+
+    input, textarea {
+      letter-spacing: normal;
+      word-spacing: normal;
+      text-transform: none;
+      text-indent: 0;
+      text-shadow: none;
+      display: inline-block;
+      text-align: start;
+
+      &:focus {
+        border-bottom: 1px solid $bluefocus;
+      }
+
+      &.invalid.touched {
+        border-bottom: 1px solid $darkerRed;
+      }
+
+      &.valid {
+        border-bottom: 1px solid $greensuccess;
+      }
+
+      &::-webkit-input-placeholder {
+        color: $placeholderGrey;
+      }
+      &::-moz-placeholder {
+        color: $placeholderGrey;
+      }
+      &:-ms-input-placeholder {
+        color: $placeholderGrey;
+      }
+      &:-moz-placeholder {
+        color: $placeholderGrey;
+      }
+    }
+
+    textarea {
+      overflow-y: hidden;
+      padding: .8rem 0 1.6rem 0;
+      resize: none;
+      min-height: 3rem;
+
+      background-color: transparent;
+      border: none;
+      border-bottom: 1px solid #9e9e9e;
+      border-radius: 0;
+      outline: none;
+      height: 3rem;
+      width: 100%;
+      font-size: 0.9rem;
+      margin: 0 0 20px 0;
+      box-shadow: none;
+      box-sizing: content-box;
+      transition: all 0.3s;
+    }
+
+    input {
+      background-color: transparent;
+      border: none;
+      border-bottom: 1px solid #9e9e9e;
+      border-radius: 0;
+      outline: none;
+      height: 3rem;
+      width: 100%;
+      font-size: 0.9rem;
+      margin: 0 0 20px 0;
+      padding: 0;
+      box-shadow: none;
+      box-sizing: content-box;
+      transition: all 0.3s;
+      //padding: 5px;
+      //width: 100%;
+    }
+  }
+}

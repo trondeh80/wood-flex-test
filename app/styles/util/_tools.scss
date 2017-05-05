@@ -28,7 +28,7 @@
   text-align: left;
 }
 
-.align-center {
+.align-center, .text-center {
   text-align: center;
 }
 
@@ -57,6 +57,7 @@
 
   &:hover{
     background-color: $darkerRed;
+    color: $greyButtonBg;
   }
 
   &:focus {
@@ -71,7 +72,6 @@
 
 section h2.header-center {
   margin: 0 0 20px 0;
-  padding: 20px 0;
   &.margin-bottom {
     margin-bottom: 10px;
   }

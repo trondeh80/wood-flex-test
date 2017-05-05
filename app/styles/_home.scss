@@ -20,7 +20,7 @@
       width: 590px;
       padding: 1em;
       border-radius: 1em;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.8);
 
       h2 {
         margin: 0;
@@ -49,10 +49,13 @@
   }
 }
 
-@media screen and (max-width: 45em) {
+@media screen and (max-width: 48em) {
   .hero-image .hero-inner .text {
     margin-right: 0;
     width: 100%;
+  }
+  section.bullet-points .text-column{
+      width: 100%;
   }
 }
 
@@ -89,19 +92,16 @@ section.inverted-background-skew {
 
 section.our-work {
   margin: 5rem 0 !important;
-  h2 {
-    border-bottom: solid;
-    margin-bottom: 30px !important;
-  }
 }
 section.our-work, section.who-are-we {
   margin: 10rem 0;
   min-height: 400px;
-
 }
 
 section.who-are-we {
-  clip-path: polygon(13% 0, 100% 6%, 100% 88%, 35% 100%, 0 90%, 0 7%);
+  /* clip-path: polygon(100% 14%, 100% 94%, 83% 100%, 0 92%, 0 16%, 76% 0); */
+  //clip-path: polygon(13% 0, 100% 6%, 100% 88%, 35% 100%, 0 90%, 0 7%);
+  clip-path: polygon(13% 0, 100% 6%, 100% 94%, 15% 100%, 0 95%, 0 7%);
   padding: 10rem 0;
   background: #1f1f1f;
   color: white;
@@ -123,21 +123,5 @@ section.who-are-we {
 
 section.contact-us {
   margin: 0 0 10rem 0;
-
-  form {
-    .form-group {
-
-      margin: 10px 0;
-      label {
-        display:block;
-        width: 100%;
-        margin: 4px 0;
-      }
-      input, textarea {
-        padding: 5px;
-        width: 100%;
-      }
-    }
-  }
 }
 
