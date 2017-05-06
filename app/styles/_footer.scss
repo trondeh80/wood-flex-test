@@ -39,6 +39,7 @@ footer {
     }
   }
 
+
   .lower-footer {
     min-height: 25rem;
     background-color: black;
@@ -53,10 +54,12 @@ footer {
       }
       .partner-himacs {
         margin-top: 0.8rem;
-        img {
-          margin-left: 8px;
-        }
       }
+    }
+
+    .footer-text {
+      font-size: 0.9rem;
+      color: #aaa;
     }
   }
 }

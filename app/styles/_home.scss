@@ -54,8 +54,8 @@
     margin-right: 0;
     width: 100%;
   }
-  section.bullet-points .text-column{
-      width: 100%;
+  .page section.bullet-points .text-column {
+      width: 100% !important;
   }
 }
 
@@ -83,7 +83,7 @@ section.bullet-points {
 
 section.inverted-background-skew {
   padding: 15rem 0;
-  min-height: 70rem;
+  min-height: 50rem;
 
   /* second edition. recreating shapes*/
   clip-path: polygon(100% 14%, 100% 94%, 83% 100%, 0 92%, 0 16%, 76% 0);
@@ -107,6 +107,7 @@ section.who-are-we {
   color: white;
 
   .card .card-image {
+    max-height: 300px;
     border-radius: 300px;
     img {
       transform: none;

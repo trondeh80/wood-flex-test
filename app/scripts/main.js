@@ -1,5 +1,7 @@
 (function(){
 
+  const $ = window.jQuery;
+
   const BWOOD = {
     ga: 'UA-1139355-43'
   };
