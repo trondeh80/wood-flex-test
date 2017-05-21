@@ -24,9 +24,11 @@ header.topmenu {
         padding: 0 1rem;
         align-items: center;
         background-color: $darkBackground;
-
-        img.logo {
-          max-height: 64px;
+        a {
+          display: flex;
+          img.logo {
+            max-height: 64px;
+          }
         }
       }
 
