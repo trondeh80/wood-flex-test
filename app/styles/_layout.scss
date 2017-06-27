@@ -6,6 +6,11 @@ body {
   flex-direction: column;
 }
 
+/* animate all the things */
+* {
+  transition: all 0.2s ease-out;
+}
+
 a {
   color: $red;
   &:hover {
@@ -114,14 +119,8 @@ h1, h2, h3, h4, h5 {
   }
 }
 
-
 @media screen and (min-width: 76em) {
   .page-inner, .container {
     width: $lgcontentwidth;
   }
-}
-
-/* animate all the things */
-* {
-  transition: all 0.2s ease-out;
 }
