@@ -44,33 +44,21 @@
         height: 0;
         border-left: 3rem solid transparent;
         border-right: 3rem solid transparent;
-        border-top: 3rem solid rgba(255,255,255,0.9);
+        border-top: 3rem solid rgba(255, 255, 255, 0.9);
         &:hover {
-          border-top: 3rem solid rgba(255,255,255,0.7);
+          border-top: 3rem solid rgba(255, 255, 255, 0.7);
         }
       }
-      margin-bottom:10px;
+      margin-bottom: 10px;
     }
 
   }
 }
 
-@media screen and (max-width: 48em) {
-  .hero-image .hero-inner .text {
-    margin-right: 0;
-    width: 100%;
-  }
-  .page section.bullet-points .text-column {
-      width: 100% !important;
-  }
-}
-
 .hero-image-one {
-  //background: url(../images/frontpage-tool-text.png) no-repeat top center;
   background: url(../images/frontpage-planning-wood.png) no-repeat top center;
   background-size: cover;
 }
-
 
 section.bullet-points {
   padding: 5rem 0;
@@ -93,26 +81,45 @@ section.inverted-background-skew {
   }
 }
 
-
 section.our-work {
   margin: 5rem 0 !important;
 }
+
 section.our-work, section.who-are-we {
   margin: 10rem 0;
   min-height: 400px;
 }
 
 section.who-are-we {
-  /* clip-path: polygon(100% 14%, 100% 94%, 83% 100%, 0 92%, 0 16%, 76% 0); */
-  //clip-path: polygon(13% 0, 100% 6%, 100% 88%, 35% 100%, 0 90%, 0 7%);
   clip-path: polygon(13% 0, 100% 6%, 100% 94%, 15% 100%, 0 95%, 0 7%);
   padding: 10rem 0;
   background: #1f1f1f;
   color: white;
 
+  h2 {
+    border: none;
+  }
+
   .card .card-image {
-    max-height: 300px;
-    border-radius: 300px;
+    position: relative;
+    max-height: 500px;
+    margin-bottom: 15px;
+
+    .information {
+      text-align:left;
+      position: absolute;
+      z-index: 10;
+      padding: 1rem;
+      width: 100%;
+      background-color: rgba(0,0,0,0.5);
+      color: white;
+      bottom: 0;
+
+      .name {
+        font-size: 1.3rem
+      }
+    }
+
     img {
       transform: none;
     }
@@ -123,10 +130,19 @@ section.who-are-we {
       }
     }
   }
-  text-align:center;
+  text-align: center;
 }
 
 section.contact-us {
   margin: 0 0 10rem 0;
 }
 
+@media screen and (max-width: 48em) {
+  .hero-image .hero-inner .text {
+    margin-right: 0;
+    width: 100%;
+  }
+  .page section.bullet-points .text-column {
+    width: 100% !important;
+  }
+}
