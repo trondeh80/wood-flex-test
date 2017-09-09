@@ -133,6 +133,8 @@ header.topmenu {
         overflow: hidden;
         padding: 10px;
 
+        font-size: 1.5rem;
+
         &.is-active {
           display: block;
           border-bottom: solid white 1px;
@@ -149,7 +151,6 @@ header.topmenu {
             &.active {
               a{
                 color: $red;
-                padding-left: 0.5em;
               }
             }
             a {

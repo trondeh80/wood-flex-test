@@ -12,10 +12,11 @@
   height: calc(100vh - #{$navheight});
 
   .hero-inner {
-
+    margin: auto;
     height: 100%;
     display: flex;
     flex-direction: row-reverse;
+    max-width: 1220px;
 
     .text {
       margin-right: 50px;
@@ -55,6 +56,13 @@
   }
 }
 
+.image-col {
+  img {
+    margin-top: 30px;
+    border: solid 1px rgba(255, 255, 255, 0.3);
+  }
+}
+
 .hero-image-one {
   background: url(../images/frontpage-planning-wood.png) no-repeat top center;
   background-size: cover;
@@ -79,6 +87,7 @@ section.inverted-background-skew {
   h2 {
     border-bottom-color: white;
   }
+
 }
 
 section.our-work {
@@ -97,26 +106,31 @@ section.who-are-we {
   color: white;
 
   h2 {
-    border: none;
+    text-align: left;
+    border-bottom-color: white;
   }
 
   .card .card-image {
     position: relative;
     max-height: 500px;
-    margin-bottom: 15px;
+    margin: 15px;
 
     .information {
-      text-align:left;
+      text-align: left;
       position: absolute;
       z-index: 10;
       padding: 1rem;
       width: 100%;
-      background-color: rgba(0,0,0,0.5);
+      background-color: rgba(0, 0, 0, 0.5);
       color: white;
       bottom: 0;
 
       .name {
-        font-size: 1.3rem
+        font-size: 1rem
+      }
+
+      .position {
+        font-size: 0.91rem;
       }
     }
 
@@ -145,4 +159,9 @@ section.contact-us {
   .page section.bullet-points .text-column {
     width: 100% !important;
   }
+
+  section.who-are-we .card-image {
+    min-height: 500px;
+  }
+
 }

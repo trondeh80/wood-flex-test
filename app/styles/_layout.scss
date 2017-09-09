@@ -25,6 +25,8 @@ h1, h2, h3, h4, h5 {
 /* wrapper for all content on page */
 .page {
   //flex: 1;
+  flex: 1 0 auto;
+  min-height: 60rem;
 }
 
 .page-inner {
@@ -117,10 +119,14 @@ h1, h2, h3, h4, h5 {
       }
     }
   }
+
+  .container {
+    padding: 0 50px;
+  }
 }
 
 @media screen and (min-width: 76em) {
   .page-inner, .container {
-    width: $lgcontentwidth;
+    max-width: $lgcontentwidth;
   }
 }
