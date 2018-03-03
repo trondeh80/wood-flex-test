@@ -40,6 +40,12 @@ h1, h2, h3, h4, h5 {
 
 .page.article {
   padding-top: 1rem;
+
+  #article-content {
+    img {
+      max-width: 100%;
+    }
+  }
 }
 
 .page.mainpage {
@@ -74,18 +80,18 @@ h1, h2, h3, h4, h5 {
   }
   .card-image {
     overflow: hidden;
-    max-height: 230px;
+    max-height: 215px;
     img {
       width: 100%;
       transition: .2s ease-in-out;
-      //&.not(.no-rotate) {
-      //  transform: rotate(15deg) scale(1.4);
-      //}
+      &:not(.no-rotate) {
+        transform: rotate(0) scale(1);
+      }
     }
   }
   &:hover {
     .card-image img {
-      //transform: rotate(0) scale(1);
+      transform: rotate(15deg) scale(1.4);
     }
   }
 
@@ -96,7 +102,7 @@ h1, h2, h3, h4, h5 {
   }
 
   .card-action {
-    border-top: 1px solid rgba(160,160,160,0.2);
+    border-top: 1px solid rgba(160, 160, 160, 0.2);
     padding: 16px 24px;
     a {
       text-decoration: none;
@@ -120,7 +126,7 @@ h1, h2, h3, h4, h5 {
     }
   }
 
-  .container {
+  .container:not(.menu-content) {
     padding: 0 50px;
   }
 }
