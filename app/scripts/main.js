@@ -1,32 +1,32 @@
 (function () {
   const $ = window.jQuery;
+  /***
+   *  Gallery code
+   *  - activates only if gallery in dom
+   *  - Stores all images in model.images
+   *  - reload / share safe
+   */
   const imageUrlHash = 'mobelverksted';
   const model = {
     currentIndex: 0,
     images: [],
     GA: 'UA-1139355-43',
     allLoaded: false,
-    urlHashRE: /^\#[a-z]+\-/
+    urlHashRE: /^\#[a-z]+\-/,
+    contentNode: null,
+    descriptionNode: null,
+    hideNavigation: true,
+    hideNavigationTimeout: 1500
   };
 
-  $(document).ready(documentReady);
-
-  function documentReady() {
-    setupLightbox(); // attach gallery events
-    setupAnimation();
-    setupAnalytics();
-    addEvents();
-  }
-
-  /***
-   *  Gallery code
-   *  - activates only if gallery in dom
-   *  - Stores all images in model.images
-   *  - Checks url for #image-N
-   */
   function setupLightbox() {
     if ($('.gallery, .image-preview').length) {
+
+      // Initialize model
+      model.contentNode = $('.modal > .modal-inner > .content');
+      model.descriptionNode = $('#lightbox-description');
       model.images = [];
+
       $('.gallery .gallery-item').each(function(){
         const linkItem = $('a', $(this));
         const galleryItem = createGalleryItem(linkItem.attr('href'), $(this));
@@ -34,6 +34,7 @@
         model.images.push(galleryItem);
       });
 
+      // Url event
       if (window.location.hash && window.location.hash.match(model.urlHashRE)) {
         const index = window.location.hash.replace(model.urlHashRE, '');
         if (!isNaN(index)) {
@@ -43,30 +44,25 @@
         }
       }
 
+      // Close on esc
       $(document).keyup((event) => {
-        if (event.which ===  27) {
-          closeMenu(event);
-        }
+        event.which ===  27 && closeMenu(event);
+        event.which === 37 && setNextImage(event, -1);
+        event.which === 39 && setNextImage(event, 1);
       });
 
-      $('.nav-left').click(getNavigateListener(-1));
-      $('.nav-right').click(getNavigateListener(1));
-    }
-  }
-
-  function getNavigateListener(direction = 1) {
-    return (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      model.currentIndex = getNextIndex(model.currentIndex, direction);
-      setLightboxImage(model.images[model.currentIndex]);
+      // Navigation
+      $('.nav-left', model.contentNode).click(getNavigateListener(-1));
+      $('.nav-right', model.contentNode).click(getNavigateListener(1));
     }
   }
 
   function createGalleryItem(url, imageDom) {
+    const description = $('.gallery-caption', imageDom).length ? $('.gallery-caption', imageDom).html() : null;
     const galleryItem = {
       galleryItem: imageDom,
       url: url,
+      description: description,
       image: new Image(),
       isLoaded: false,
       load: () => {
@@ -87,6 +83,7 @@
     return (event) => {
       event.preventDefault();
       event.stopPropagation();
+      showNavText();
       model.currentIndex = model.images.indexOf(image);
       setLightboxImage(image);
     };
@@ -96,42 +93,72 @@
     $('#overlay').addClass('open'); // opens the modal
     $('body').addClass('overlay-open');
 
-    const contentNode = $('.modal > .modal-inner > .content');
-    const domImage = $('.modal > .modal-inner > .content .image-full .image-container img');
+    if (galleryItem.isLoaded) {
+      updateImageData(galleryItem);
+    } else {
+      galleryItem.load().then(() => updateImageData(galleryItem));
+    }
+  }
 
+  // Shows image in view
+  // Preloads next 3 images
+  function updateImageData(currentImage) {
+    model.contentNode.addClass('is-loading');
+
+    const domImage = $('.image-full .image-container img', model.contentNode);
     if (domImage.length) {
       domImage.remove();
     }
 
-    contentNode.addClass('is-loading');
-
-    if (galleryItem.isLoaded) {
-      updateImageData(contentNode, galleryItem);
+    if (currentImage.description === null) {
+      model.descriptionNode.addClass('hidden');
     } else {
-      galleryItem.load().then(() => updateImageData(contentNode, galleryItem));
+      model.descriptionNode.removeClass('hidden');
     }
+
+    // write dom changes
+    render(currentImage);
+
+    // Change url state
+    history.pushState(null, null, `#${imageUrlHash}-${model.currentIndex}`);
+
+    // Hide loader
+    model.contentNode.removeClass('is-loading');
+
+    // Preload the next three images.
+    if (!isAllLoaded()) {
+      preloadItems(3);
+    }
+
+    if (model.hideNavigation) {
+      let navTimeout ;
+      navTimeout = setTimeout(() => {
+        clearInterval(navTimeout);
+        removeNavText();
+      }, model.hideNavigationTimeout);
+    }
+  }
+
+  function render(currentImage) {
+    $('.image-full .image-container', model.contentNode)
+      .html(`<img class="lb-image fullsize-image" src="${currentImage.url}" />`);
+    $('span', model.descriptionNode).html(`${currentImage.description || ''}`);
+  }
+
+  function removeNavText() {
+    const navigationItems = $('.nav', model.contentNode);
+    navigationItems.addClass('hidden');
+  }
+
+  function showNavText() {
+    const navigationItems = $('.nav', model.contentNode);
+    navigationItems.removeClass('hidden');
   }
 
   function isAllLoaded() {
     return model.allLoaded || (model.allLoaded = model.images.reduce((memo, item) => {
       return memo === true && item.isLoaded;
     }, true));
-  }
-
-  // Shows image in view
-  // Preloads next 3 images
-  // Todo: update texts and og:image
-  function updateImageData(contentNode, currentImage) {
-    contentNode.removeClass('is-loading');
-
-    $('.image-full .image-container', contentNode).html(`<img class="lb-image fullsize-image" src="${currentImage.url}" />`);
-
-    history.pushState(null, null, `#${imageUrlHash}-${model.currentIndex}`);
-
-    // Preload the next three images.
-    if (!isAllLoaded()) {
-      preloadItems(3);
-    }
   }
 
   function preloadItems(interval) {
@@ -146,13 +173,18 @@
     }
   }
 
-  function setNextImage(event) {
+  function getNavigateListener(direction = 1) {
+    return (event) => (setNextImage(event, direction));
+  }
+
+  function setNextImage(event, direction = null) {
     event.preventDefault();
     event.stopPropagation();
+    showNavText();
 
-    model.currentIndex = getNextIndex();
-    const image = model.images[model.currentIndex];
-    setLightboxImage(image);
+    model.currentIndex = direction === null ?
+      getNextIndex() : getNextIndex(model.currentIndex, direction);
+    setLightboxImage(model.images[model.currentIndex]);
   }
 
   function getNextIndex(nextIndex = null , dir = 1) {
@@ -164,11 +196,7 @@
     }
   }
 
-  function isValidEmail(emailAddress) {
-    const reggie = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return reggie.test(emailAddress);
-  }
-
+  /*** Form validation ***/
   function addFormValidation(form) {
     $('input, textarea', form).focus(function () {
       $(this).addClass('touched');
@@ -194,6 +222,11 @@
 
       form.toggleClass('valid', formIsValid);
     });
+  }
+
+  function isValidEmail(emailAddress) {
+    const reggie = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return reggie.test(emailAddress);
   }
 
   function getEmail() {
@@ -269,5 +302,16 @@
       addFormValidation($(this));
     });
   }
+
+
+  $(document).ready(documentReady);
+
+  function documentReady() {
+    setupLightbox(); // attach gallery events
+    setupAnimation();
+    setupAnalytics();
+    addEvents();
+  }
+
 
 })();
