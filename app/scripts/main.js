@@ -1,113 +1,143 @@
 (function () {
-
   const $ = window.jQuery;
+  const imageUrlHash = 'mobelverksted-bilde';
   const model = {
     currentIndex: 0,
     images: [],
-    GA: 'UA-1139355-43'
+    GA: 'UA-1139355-43',
+    allLoaded: false,
+    loadingHtml: '<div class="loading"><span>Laster...</span></div>',
+    urlHashRE: /^\#[a-z]+\-/
   };
 
   $(document).ready(documentReady);
 
   function documentReady() {
-    setupLightbox(); // attach events
-    addEvents();
+    setupLightbox(); // attach gallery events
     setupAnimation();
     setupAnalytics();
+    addEvents();
   }
 
+  /***
+   *  Gallery code
+   *  - activates only if gallery in dom
+   *  - Stores all images in model.images
+   *  - Checks url for #image-N
+   */
   function setupLightbox() {
     if ($('.gallery, .image-preview').length) {
       model.images = [];
-
-      // $('#overlay, #close-gallery-btn').click(closeLightbox);
-      $('.gallery').each(function () {
-        $('.gallery-item', $(this)).each(addImage);
+      $('.gallery .gallery-item').each(function(){
+        const linkItem = $('a', $(this));
+        const galleryItem = createGalleryItem(linkItem.attr('href'), $(this));
+        linkItem.click(getSingleImageClickEvent(galleryItem));
+        model.images.push(galleryItem);
       });
 
-      if (window.location.hash) {
-        const index = Number(window.location.hash.replace(/^\#[a-z]+\-/,''));
-        model.currentIndex = index;
-        setLightboxImage(model.images[index]);
-        $('#overlay').addClass('open'); // opens the modal
+      if (window.location.hash && window.location.hash.match(model.urlHashRE)) {
+        const index = window.location.hash.replace(model.urlHashRE, '');
+        if (!isNaN(index)) {
+          model.currentIndex = Number(index);
+          setLightboxImage(model.images[index]);
+          $('#overlay').addClass('open'); // opens the modal
+        }
       }
-    }
-
-    function addImage() {
-      const linkItem = $('a', $(this));
-      const image = {
-        galleryItem: $(this),
-        url: linkItem.attr('href')
-      };
-      model.images.push(image);
-      linkItem.click(getSingleImageClickEvent(image));
     }
   }
 
-  function addEvents() {
-    $('.menu-icon').click(toggleMenu);
-    $('.overlay').click(closeMenu);
-    $('.menu-icon-close').click(closeMenu);
-    $('.email').html(getEmail());
-    $('.email-link').attr('href', `mailto:${getEmail()}`);
-
-    $('form').each(function () {
-      addFormValidation($(this));
-    });
-
-    $(document).on('click', '#overlay .modal > .modal-inner > .content img',
-      model,
-      setNextImage);
+  function createGalleryItem(url, imageDom) {
+    const galleryItem = {
+      galleryItem: imageDom,
+      url: url,
+      image: new Image(),
+      isLoaded: false,
+      load: () => {
+        galleryItem.image.src = galleryItem.url;
+        return new Promise((resolve) => {
+          galleryItem.image.addEventListener('load', () => {
+            galleryItem.isLoaded = true;
+            resolve(galleryItem);
+          });
+        });
+      }
+    };
+    return galleryItem;
   }
 
   // Get click listener
   function getSingleImageClickEvent(image) {
     return (event) => {
-      model.currentIndex = model.images.indexOf(image);
       event.preventDefault();
       event.stopPropagation();
+      model.currentIndex = model.images.indexOf(image);
       setLightboxImage(image);
-      $('#overlay').addClass('open'); // opens the modal
     };
   }
 
-  function setLightboxImage(currentImage) {
+  function setLightboxImage(galleryItem) {
+    $('#overlay').addClass('open'); // opens the modal
+    $('body').addClass('overlay-open');
+
     const contentNode = $('.modal > .modal-inner > .content');
     const domImage = $('.modal > .modal-inner > .content img');
-
-    $('.previous-image', contentNode).remove();
 
     if (domImage.length) {
       domImage.remove();
     }
-    const html = '<div class="loading"><span>Laster...</span></div>' ;
-    contentNode.html(html);
 
-    let image = new Image();
-    image.addEventListener('load', () => {
-      contentNode
-        .html(`<img class="lb-image fullsize-image" src="${currentImage.url}" />`);
+    contentNode.html(model.loadingHtml); // Show preloader
 
-      history.pushState(null, null, `#image-${model.currentIndex}`);
-    });
-    image.src = currentImage.url;
+    if (galleryItem.isLoaded) {
+      updateImageData(contentNode, galleryItem);
+    } else {
+      galleryItem.load().then(() => updateImageData(contentNode, galleryItem));
+    }
+  }
 
+  function isAllLoaded() {
+    return model.allLoaded || (model.allLoaded = model.images.reduce((memo, item) => {
+      return memo === true && item.isLoaded;
+    }, true));
+  }
+
+  // Shows image in view
+  // Preloads next 3 images
+  // Todo: update texts and og:image
+  function updateImageData(contentNode, currentImage) {
+    contentNode.html(`<img class="lb-image fullsize-image" src="${currentImage.url}" />`);
+    history.pushState(null, null, `#${imageUrlHash}-${model.currentIndex}`);
+
+    // Preload the next three images.
+    if (!isAllLoaded()) {
+      preloadItems(3);
+    }
+  }
+
+  function preloadItems(interval) {
+    let c = 0, currentIndex = model.currentIndex;
+    while (c <= interval && !isAllLoaded()) {
+      currentIndex = getNextIndex(currentIndex);
+      const galleryItem = model.images[currentIndex];
+      if (!galleryItem.isLoaded) {
+        galleryItem.load();
+        c++;
+      }
+    }
   }
 
   function setNextImage(event) {
-
     event.preventDefault();
     event.stopPropagation();
 
-    if (model.currentIndex < model.images.length - 1) {
-      model.currentIndex = model.currentIndex + 1;
-    } else {
-      model.currentIndex = 0;
-    }
-
+    model.currentIndex = getNextIndex();
     const image = model.images[model.currentIndex];
-
     setLightboxImage(image);
+  }
+
+  function getNextIndex(nextIndex = null) {
+    const index = nextIndex !== null ? nextIndex : model.currentIndex;
+    return index < model.images.length - 1 ? index + 1 : 0;
   }
 
   function isValidEmail(emailAddress) {
@@ -147,7 +177,7 @@
   }
 
   function closeMenu(event) {
-      if ($(event.target).hasClass('lb-image'))
+    if ($(event.target).hasClass('lb-image'))
       return;
 
     event.preventDefault();
@@ -155,6 +185,7 @@
 
     $('.menu-activate').removeClass('is-active');
     $('#overlay').removeClass('is-active').removeClass('open');
+    $('body').removeClass('overlay-open');
     history.pushState('',
       document.title,
       window.location.pathname + window.location.search);
@@ -177,6 +208,12 @@
     });
   }
 
+  function reflowPage() {
+    const originalBodyStyle = getComputedStyle(document.body).getPropertyValue('display');
+    document.body.style.display = 'none';
+    setTimeout(() => (document.body.style.display = originalBodyStyle), 10);
+  }
+
   function setupAnalytics() {
     (function (b, o, i, l, e, r) {
       b.GoogleAnalyticsObject = l;
@@ -192,6 +229,21 @@
     }(window, document, 'script', 'ga'));
     ga('create', model.GA);
     ga('send', 'pageview');
+  }
+
+  function addEvents() {
+    $('.menu-icon').click(toggleMenu);
+    $('.overlay').click(closeMenu);
+    $('.menu-icon-close').click(closeMenu);
+    $('.email').html(getEmail());
+    $('.email-link').attr('href', `mailto:${getEmail()}`);
+
+    $(document).on('click', '#overlay .modal > .modal-inner > .content img', model, setNextImage);
+    window.addEventListener('orientationchange', reflowPage);
+
+    $('form').each(function () {
+      addFormValidation($(this));
+    });
   }
 
 })();
