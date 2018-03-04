@@ -1,58 +1,47 @@
 (function () {
 
   const $ = window.jQuery;
-  const $$ = window.document.querySelectorAll.bind(window.document);
-  let galleryModel = [];
-
-  const BWOOD = {
-    ga: 'UA-1139355-43'
+  const model = {
+    currentIndex: 0,
+    images: [],
+    GA: 'UA-1139355-43'
   };
 
   $(document).ready(documentReady);
 
   function documentReady() {
+    setupLightbox(); // attach events
     addEvents();
     setupAnimation();
     setupAnalytics();
-
-    if ($('.gallery, .image-preview').length) {
-      // Check url if image is selected
-      // routeToImage...
-      setupLightbox(); // attach events
-    }
   }
 
   function setupLightbox() {
-    galleryModel = [];
-    $('#overlay, #close-gallery-btn').click(closeLightbox);
-    $('.gallery').each(function() {
-      $('.gallery-item', $(this)).each(function() {
-        const linkItem = $('a', $(this));
-        galleryModel.push(linkItem);
-        linkItem.click(getSingleImageClickEvent(linkItem.attr('href'), $(this), galleryModel.length));
+    if ($('.gallery, .image-preview').length) {
+      model.images = [];
+
+      // $('#overlay, #close-gallery-btn').click(closeLightbox);
+      $('.gallery').each(function () {
+        $('.gallery-item', $(this)).each(addImage);
       });
-    });
-  }
 
-  function closeLightbox() {
-    $('#overlay').removeClass('open');
-    // history.pushState(null, null, null);
-  }
+      if (window.location.hash) {
+        const index = Number(window.location.hash.replace(/^\#[a-z]+\-/,''));
+        model.currentIndex = index;
+        setLightboxImage(model.images[index]);
+        $('#overlay').addClass('open'); // opens the modal
+      }
+    }
 
-  // Get click listener
-  function getSingleImageClickEvent(image, galleryItem, index) {
-    return (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      // history.pushState(null, null, `#image-${index}`);
-      setLightboxImage(image);
-    };
-  }
-
-  function setLightboxImage(image) {
-    const img = `<img class="lb-image fullsize-image" src="${image}" />`;
-    $('.modal > .modal-inner > .content').html(img);
-    $('#overlay').toggleClass('open');
+    function addImage() {
+      const linkItem = $('a', $(this));
+      const image = {
+        galleryItem: $(this),
+        url: linkItem.attr('href')
+      };
+      model.images.push(image);
+      linkItem.click(getSingleImageClickEvent(image));
+    }
   }
 
   function addEvents() {
@@ -61,9 +50,64 @@
     $('.menu-icon-close').click(closeMenu);
     $('.email').html(getEmail());
     $('.email-link').attr('href', `mailto:${getEmail()}`);
+
     $('form').each(function () {
       addFormValidation($(this));
     });
+
+    $(document).on('click', '#overlay .modal > .modal-inner > .content img',
+      model,
+      setNextImage);
+  }
+
+  // Get click listener
+  function getSingleImageClickEvent(image) {
+    return (event) => {
+      model.currentIndex = model.images.indexOf(image);
+      event.preventDefault();
+      event.stopPropagation();
+      setLightboxImage(image);
+      $('#overlay').addClass('open'); // opens the modal
+    };
+  }
+
+  function setLightboxImage(currentImage) {
+    const contentNode = $('.modal > .modal-inner > .content');
+    const domImage = $('.modal > .modal-inner > .content img');
+
+    $('.previous-image', contentNode).remove();
+
+    if (domImage.length) {
+      domImage.remove();
+    }
+    const html = '<div class="loading"><span>Laster...</span></div>' ;
+    contentNode.html(html);
+
+    let image = new Image();
+    image.addEventListener('load', () => {
+      contentNode
+        .html(`<img class="lb-image fullsize-image" src="${currentImage.url}" />`);
+
+      history.pushState(null, null, `#image-${model.currentIndex}`);
+    });
+    image.src = currentImage.url;
+
+  }
+
+  function setNextImage(event) {
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (model.currentIndex < model.images.length - 1) {
+      model.currentIndex = model.currentIndex + 1;
+    } else {
+      model.currentIndex = 0;
+    }
+
+    const image = model.images[model.currentIndex];
+
+    setLightboxImage(image);
   }
 
   function isValidEmail(emailAddress) {
@@ -102,9 +146,19 @@
     return String.fromCharCode(98, 103, 101, 64, 98, 45, 119, 111, 111, 100, 46, 110, 111);
   }
 
-  function closeMenu() {
+  function closeMenu(event) {
+      if ($(event.target).hasClass('lb-image'))
+      return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
     $('.menu-activate').removeClass('is-active');
-    $('#overlay').removeClass('is-active');
+    $('#overlay').removeClass('is-active').removeClass('open');
+    history.pushState('',
+      document.title,
+      window.location.pathname + window.location.search);
+    return false;
   }
 
   function toggleMenu() {
@@ -136,7 +190,7 @@
       e.src = 'https://www.google-analytics.com/analytics.js';
       r.parentNode.insertBefore(e, r);
     }(window, document, 'script', 'ga'));
-    ga('create', BWOOD.ga);
+    ga('create', model.GA);
     ga('send', 'pageview');
   }
 

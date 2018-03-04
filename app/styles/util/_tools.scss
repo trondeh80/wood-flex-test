@@ -20,22 +20,6 @@
     transition: opacity 0.3s;
   }
 
-  #close-gallery-btn {
-    font-size: 2rem;
-    z-index: 200;
-    background: none;
-    border: none;
-    color: #fff;
-    //border-bottom: solid 1px #fff;
-
-    &:after {
-      content: '×';
-    }
-
-    &:hover {
-      cursor: pointer;
-    }
-  }
 }
 
 .align-right {
