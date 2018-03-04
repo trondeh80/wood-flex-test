@@ -131,11 +131,19 @@
     }
 
     if (model.hideNavigation) {
-      let navTimeout ;
-      navTimeout = setTimeout(() => {
-        clearInterval(navTimeout);
-        removeNavText();
-      }, model.hideNavigationTimeout);
+     debounce(removeNavText, model.hideNavigationTimeout)();
+    }
+  }
+
+  let intervalId;
+  function debounce(fn, timeout) {
+    return () => {
+      if (intervalId){
+        clearInterval(intervalId);
+      }
+      intervalId = setTimeout(() => {
+        fn();
+      }, timeout);
     }
   }
 
