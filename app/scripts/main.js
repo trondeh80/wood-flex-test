@@ -1,12 +1,11 @@
 (function () {
   const $ = window.jQuery;
-  const imageUrlHash = 'mobelverksted-bilde';
+  const imageUrlHash = 'mobelverksted';
   const model = {
     currentIndex: 0,
     images: [],
     GA: 'UA-1139355-43',
     allLoaded: false,
-    loadingHtml: '<div class="loading"><span>Laster...</span></div>',
     urlHashRE: /^\#[a-z]+\-/
   };
 
@@ -43,6 +42,24 @@
           $('#overlay').addClass('open'); // opens the modal
         }
       }
+
+      $(document).keyup((event) => {
+        if (event.which ===  27) {
+          closeMenu(event);
+        }
+      });
+
+      $('.nav-left').click(getNavigateListener(-1));
+      $('.nav-right').click(getNavigateListener(1));
+    }
+  }
+
+  function getNavigateListener(direction = 1) {
+    return (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      model.currentIndex = getNextIndex(model.currentIndex, direction);
+      setLightboxImage(model.images[model.currentIndex]);
     }
   }
 
@@ -80,13 +97,13 @@
     $('body').addClass('overlay-open');
 
     const contentNode = $('.modal > .modal-inner > .content');
-    const domImage = $('.modal > .modal-inner > .content img');
+    const domImage = $('.modal > .modal-inner > .content .image-full .image-container img');
 
     if (domImage.length) {
       domImage.remove();
     }
 
-    contentNode.html(model.loadingHtml); // Show preloader
+    contentNode.addClass('is-loading');
 
     if (galleryItem.isLoaded) {
       updateImageData(contentNode, galleryItem);
@@ -105,7 +122,10 @@
   // Preloads next 3 images
   // Todo: update texts and og:image
   function updateImageData(contentNode, currentImage) {
-    contentNode.html(`<img class="lb-image fullsize-image" src="${currentImage.url}" />`);
+    contentNode.removeClass('is-loading');
+
+    $('.image-full .image-container', contentNode).html(`<img class="lb-image fullsize-image" src="${currentImage.url}" />`);
+
     history.pushState(null, null, `#${imageUrlHash}-${model.currentIndex}`);
 
     // Preload the next three images.
@@ -135,9 +155,13 @@
     setLightboxImage(image);
   }
 
-  function getNextIndex(nextIndex = null) {
+  function getNextIndex(nextIndex = null , dir = 1) {
     const index = nextIndex !== null ? nextIndex : model.currentIndex;
-    return index < model.images.length - 1 ? index + 1 : 0;
+    if (dir > 0) {
+      return index < model.images.length - 1 ? index + 1 : 0;
+    } else {
+      return index > 0 ? index - 1 : model.images.length - 1;
+    }
   }
 
   function isValidEmail(emailAddress) {
