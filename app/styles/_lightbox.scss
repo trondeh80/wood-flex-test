@@ -1,0 +1,45 @@
+.modal {
+
+  .modal-inner {
+    display: flex;
+    flex-direction: column;
+
+    .top {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: 50px;
+      padding-right: 1rem;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      button.close-btn {
+
+      }
+    }
+  }
+
+  .content {
+    display: flex;
+    margin: auto;
+    position: absolute;
+    padding: 2.2rem;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+
+
+    img {
+      max-height: 100%;
+      max-width: 100%;
+    }
+  }
+
+}
